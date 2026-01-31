@@ -32,8 +32,6 @@ result = eval(expr)
 print("答案:", result)
 
 # 发回程序
-p.stdin.write(str(result) + "\n")
-p.stdin.flush()
 
 out, err = p.communicate(input=str(result) + "\n", timeout=2)
 print("stdout:", out)
