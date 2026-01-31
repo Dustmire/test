@@ -1,16 +1,8 @@
 import subprocess
 
-path = "/readflag"
-
+# 方案1: 正确的 find 命令
 out = subprocess.check_output(
-    ["ls", "/data/jobs/"],
+    ["find", "/data/jobs/", "-name", "flag.txt"],
     text=True
 )
-
 print(out)
-
-# 权限字段是第一个 token，如 -rwsr-xr-x
-perm = out.split()[0]
-has_suid = perm[3] in ("s", "S")
-
-print("has_suid:", has_suid)
