@@ -38,11 +38,11 @@ full_output = p.stdout.read()
 # 【核心修改】不要直接打印 full_output
 # 1. 尝试正则提取 flag
 import re
-flags = re.findall(r'flag\{.*?\}', full_output) # 或者 r'CTF\{.*?\}'
+flags = re.findall(r'alictf\{.*?\}', full_output) # 或者 r'CTF\{.*?\}'
 
 if flags:
-    print("\n[+] FOUND FLAG:", flags[0])
-else:
+    print("\n[+] ", flags[0])
+else
     # 2. 如果没找到 flag，打印最后 100 个字符（通常报错或 flag 在最后）
     print("\n[-] No flag matched.")
     print("Last 100 chars:", full_output[-100:])
