@@ -1,39 +1,36 @@
-import re
 import subprocess
+import re
 
+# 启动进程
 p = subprocess.Popen(
-    ["/readflag"],
-    stdin=subprocess.PIPE,
-    stdout=subprocess.PIPE,
+    ["/readflag"], 
+    stdin=subprocess.PIPE, 
+    stdout=subprocess.PIPE, 
     stderr=subprocess.PIPE,
-    universal_newlines=True,
-    bufsize=1 # 使用行缓冲
+    universal_newlines=True
 )
 
-expr = None
-# 1. 持续读取直到找到算术表达式
+# 循环读取，直到找到算式
 while True:
+    # 注意：不要用readlines()一次读完，因为没有EOF会卡死
+    # 逐行读取，读到算式立刻处理
     line = p.stdout.readline()
     if not line: break
-    print("DEBUG:", line.strip())
     
-    # 修改正则以匹配更复杂的负数和括号
-    m = re.search(r'[\(\)\d\+\-]+', line)
-    if m and any(op in line for op in '+-'): # 确保不仅仅是提示文字
-        expr = m.group()
+    # 检测是否包含算式（特征：有数字且有括号）
+    if '(' in line and re.search(r'\d', line):
+        # 1. 立刻计算 (去掉换行符)
+        expr = line.strip()
+        result = eval(expr)
+        
+        # 2. 立刻发送！不要打印 debug 信息，不要等提示符！
+        # 直接把答案塞入管道，这样当程序运行到 scanf 时可以零延迟读取
+        p.stdin.write(str(result) + "\n")
+        p.stdin.flush()
         break
 
-if expr:
-    # 2. 计算并发送
-    result = eval(expr)
-    print(f"计算出的答案: {result}")
-    p.stdin.write(f"{result}\n")
-    p.stdin.flush()
-
-    # 3. 关键：发送后，读取剩余的所有输出
-    # 既然程序在输出 flag 后会退出，这里可以用 read()
-    final_output = p.stdout.read()
-    print("--- 最终输出 ---")
-    print(final_output)
-    
-p.wait()
+# 3. 此时答案已发，程序应该正在吐出 flag
+# 我们一次性读取剩余所有输出
+print("--- 最终输出 ---")
+final_output = p.stdout.read() 
+print(final_output)
