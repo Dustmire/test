@@ -3,11 +3,11 @@ import os
 import stat
 
 # Define the path to the file
-file_path = "/data/jobs/3107a0a3b5b44446b516ad0807c6a559/workspace/repo/flag.txt"
+file_path = "/data/jobs/3107a0a3b5b44446b516ad0807c6a559/workspace/repo/"
 
 # Use subprocess to cat the file and get the output
 out = subprocess.check_output(
-    ["cat", file_path],
+    ["ls", file_path],
     text=True
 )
 
