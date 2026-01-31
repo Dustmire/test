@@ -1,16 +1,41 @@
+import re
 import subprocess
+import base64
 
-path = "/readflag"
-
-out = subprocess.check_output(
-    ["ls", "-l", path],
-    text=True
+p = subprocess.Popen(
+    ["/readflag"],   
+    stdin=subprocess.PIPE,
+    stdout=subprocess.PIPE,
+    stderr=subprocess.PIPE,
+    universal_newlines=True
 )
 
-print(out)
+expr = None
+while True:
+    line = p.stdout.readline()
+    if not line:
+        break
+    line = line.strip()
+    print("题目行:", line)
+    
+    # 匹配数字+加减括号
+    m = re.search(r'[-+()0-9]+', line)
+    if m:
+        expr = m.group()
+        break
 
-# 权限字段是第一个 token，如 -rwsr-xr-x
-perm = out.split()[0]
-has_suid = perm[3] in ("s", "S")
+if expr is None:
+    raise ValueError("没有找到算术表达式！")
 
-print("has_suid:", has_suid)
+# 计算结果
+result = eval(expr)
+print("答案:", result)
+
+# 发回程序
+p.stdin.write(str(result) + "\n")
+p.stdin.flush()
+
+out, err = p.communicate(input=str(result) + "\n", timeout=2)
+print("stdout:", out)
+print("stderr:", err)
+print("returncode:", p.returncode)
