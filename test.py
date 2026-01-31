@@ -1,5 +1,6 @@
 import re
 import subprocess
+import base64
 
 p = subprocess.Popen(
     ["/readflag"],   
@@ -34,5 +35,8 @@ print("答案:", result)
 p.stdin.write(str(result) + "\n")
 p.stdin.flush()
 
+remaining = p.stdout.read()
 # 打印剩余输出
-print(p.stdout.read())
+b64 = base64.b64encode(remaining.encode()).decode()
+
+print("stdout(base64):", b64)
