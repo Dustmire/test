@@ -42,7 +42,7 @@ flags = re.findall(r'alictf\{.*?\}', full_output) # 或者 r'CTF\{.*?\}'
 
 if flags:
     print("\n[+] ", flags[0])
-else
+else:
     # 2. 如果没找到 flag，打印最后 100 个字符（通常报错或 flag 在最后）
     print("\n[-] No flag matched.")
     print("Last 100 chars:", full_output[-100:])
