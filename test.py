@@ -8,7 +8,7 @@ print("=== 开始诊断 ===")
 # 1. 启动进程
 try:
     p = subprocess.Popen(
-        ["./readflag"],  # 确保路径对，如果在当前目录就是 ./readflag
+        ["/readflag"],  # 确保路径对，如果在当前目录就是 ./readflag
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
