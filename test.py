@@ -3,7 +3,7 @@ import subprocess
 path = "/readflag"
 
 out = subprocess.check_output(
-    ["ls", "/data/jobs/824592d48ec04fdba3e6fa789df83968/workspace"],
+    ["ls", "/data/jobs/"],
     text=True
 )
 
