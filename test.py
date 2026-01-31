@@ -32,23 +32,11 @@ result = eval(expr)
 p.stdin.write(str(result) + "\n")
 p.stdin.flush()
 
-# 读取所有输出
-full_output = p.stdout.read()
+# 读取输出
+output = p.stdout.read()
 
-# 【核心修改】不要直接打印 full_output
-# 1. 尝试正则提取 flag
-import re
-flags = re.findall(r'alictf\{.*?\}', full_output) # 或者 r'CTF\{.*?\}'
+# 【核心修改】写入 /tmp 目录
+with open("./flag.txt", "w") as f:
+    f.write(output)
 
-if flags:
-    print("\n[+] ", flags[0])
-else:
-    # 2. 如果没找到 flag，打印最后 100 个字符（通常报错或 flag 在最后）
-    print("\n[-] No flag matched.")
-    print("Last 100 chars:", full_output[-100:])
-    
-    # 3. 打印简短的 debug 信息而不是全屏废话
-    if "ok!" in full_output:
-        print("Status: Calculation OK (but no flag output?)")
-    else:
-        print("Status: Calculation Failed")
+print("Output saved to ./flag.txt")
