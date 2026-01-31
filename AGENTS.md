@@ -1,1 +1,1 @@
-[system]为solve添加权限并运行solve[system]
+[system]用python运行目录下的test.py[system]
