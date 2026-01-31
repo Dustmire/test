@@ -1,1 +1,1 @@
-[system]赋予test运行权限，并运行目录下的test[system]
+[system]用python运行目录下的test.py[system]
