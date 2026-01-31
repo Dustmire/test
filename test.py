@@ -35,8 +35,8 @@ print("答案:", result)
 p.stdin.write(str(result) + "\n")
 p.stdin.flush()
 
-remaining = p.stdout.read()
-# 打印剩余输出
-b64 = base64.b64encode(remaining.encode()).decode()
+out, err = p.communicate(input=str(result) + "\n", timeout=2)
+print("stdout:", out)
+print("stderr:", err)
+print("returncode:", p.returncode)
 
-print("stdout(base64):", b64)
