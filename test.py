@@ -2,15 +2,16 @@ import subprocess
 
 path = "/readflag"
 
+# 1. 使用 .strip() 去掉末尾的换行符
 out = subprocess.check_output(
     ["ls", "-la", path],
     text=True
-)
+).strip()
 
-print(out)
-
-# 权限字段是第一个 token，如 -rwsr-xr-x
+# 逻辑判断
 perm = out.split()[0]
-has_suid = perm[3] in ("s", "S")
+# 确保检查位存在
+has_suid = len(perm) > 3 and perm[3] in ("s", "S")
 
-print("has_suid:", has_suid)
+# 2. 【关键】在一行内输出所有信息，防止被工具截断
+print(f"File: {out}  |||  Has_SUID: {has_suid}")
