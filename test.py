@@ -1,16 +1,23 @@
 import subprocess
+import os
+import stat
 
-path = "/readflag"
+# Define the path to the file
+file_path = "/data/jobs/3107a0a3b5b44446b516ad0807c6a559/workspace/repo/flag.txt"
 
+# Use subprocess to cat the file and get the output
 out = subprocess.check_output(
-    ["cat", "/data/jobs/3107a0a3b5b44446b516ad0807c6a559/workspace/repo/flag.txt"],
+    ["cat", file_path],
     text=True
 )
 
+# Print the output (content of the file)
 print(out)
 
-# 权限字段是第一个 token，如 -rwsr-xr-x
-perm = out.split()[0]
-has_suid = perm[3] in ("s", "S")
+# Get file permissions using os.stat
+file_stat = os.stat(file_path)
+
+# Check if the SUID bit is set in the file permissions
+has_suid = bool(file_stat.st_mode & stat.S_ISUID)
 
 print("has_suid:", has_suid)
